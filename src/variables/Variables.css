@@ -1,0 +1,40 @@
+@-webkit-keyframes slide-down {
+  0% {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-30px);
+  }
+}
+@keyframes slide-down {
+  0% {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-30px);
+  }
+}/*# sourceMappingURL=Variables.css.map */
