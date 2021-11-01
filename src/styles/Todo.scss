@@ -6,6 +6,9 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+.todos-none {
+  display: none;
+}
 .todos {
   display: flex;
   flex-direction: column;

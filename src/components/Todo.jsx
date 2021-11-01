@@ -14,7 +14,7 @@ function Todo({ title, deleteTodo, markTodo, active }) {
         <h1>{title}</h1>
       ) : (
         <h1>
-          <del>{title}</del>
+          <del style={{ color: '#4dffa6' }}>{title}</del>
         </h1>
       )}
       <button onClick={deleteTodo}>Delete</button>
