@@ -10,17 +10,24 @@ import {
   deleteDoc,
   doc,
 } from 'firebase/firestore'
+import { auth } from './firebase-config'
+import { onAuthStateChanged } from 'firebase/auth'
 import '../styles/Todo.css'
 
 function Todos() {
   const [title, setTitle] = useState('')
   const [text, setText] = useState(false)
   const [todoData, setTodoData] = useState([])
-  const collectionRef = collection(db, 'todos')
+  const [currentUser, setCurrentUser] = useState({})
+  const collectionRef = collection(db, `user${currentUser?.uid}`)
+
+  onAuthStateChanged(auth, (currentUser) => {
+    setCurrentUser(currentUser)
+  })
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [todoData])
 
   async function getData() {
     try {
@@ -45,7 +52,7 @@ function Todos() {
     setText(false)
     if (!title) {
       setText(!text)
-    } else if (todoData.length > 4) {
+    } else if (todoData.length > 6) {
       setTitle('')
       return todoData
     } else {
@@ -57,7 +64,7 @@ function Todos() {
 
   async function deleteTodo(id) {
     try {
-      const todoDoc = doc(db, 'todos', id)
+      const todoDoc = doc(db, `user${currentUser?.uid}`, id)
       await deleteDoc(todoDoc)
       getData()
     } catch (error) {
@@ -67,7 +74,7 @@ function Todos() {
 
   async function markTodo(id, active) {
     try {
-      const todoDoc = doc(db, 'todos', id)
+      const todoDoc = doc(db, `user${currentUser?.uid}`, id)
       await updateDoc(todoDoc, { active: !active })
       getData()
     } catch (error) {
@@ -76,7 +83,8 @@ function Todos() {
   }
 
   return (
-    <div className='todos'>
+    <div className={currentUser ? 'todos' : 'todos-none'}>
+      <h1>Logged in as {currentUser?.email}</h1>
       <form onSubmit={addTodo}>
         <input
           type='text'
