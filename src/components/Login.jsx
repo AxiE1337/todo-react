@@ -26,6 +26,8 @@ function Login() {
 
   async function signUpFunction(e) {
     e.preventDefault()
+    setSignUpEmail('')
+    setSignUpPass('')
     try {
       await createUserWithEmailAndPassword(auth, signUpEmail, signUpPass)
     } catch (err) {
@@ -35,9 +37,12 @@ function Login() {
 
   async function signInFunction(e) {
     e.preventDefault()
+    setSignInEmail('')
+    setSignInPass('')
     try {
       await signInWithEmailAndPassword(auth, signInEmail, signInPass)
     } catch (err) {
+      alert('Invalid email or password')
       console.log(err.message)
     }
   }
@@ -55,6 +60,7 @@ function Login() {
           <form onSubmit={signUpFunction}>
             <input
               type='email'
+              value={signUpEmail}
               placeholder='email...'
               onChange={(e) => {
                 setSignUpEmail(e.target.value)
@@ -63,6 +69,7 @@ function Login() {
 
             <input
               type='password'
+              value={signUpPass}
               placeholder='password...'
               onChange={(e) => {
                 setSignUpPass(e.target.value)
@@ -80,6 +87,7 @@ function Login() {
             <input
               id='email'
               type='email'
+              value={signInEmail}
               placeholder='email...'
               onChange={(e) => {
                 setSignInEmail(e.target.value)
@@ -88,6 +96,7 @@ function Login() {
 
             <input
               type='password'
+              value={signInPass}
               placeholder='password...'
               onChange={(e) => {
                 setSignInPass(e.target.value)
