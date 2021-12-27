@@ -6,6 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth'
+import { Button, CircularProgress } from '@mui/material'
 import '../styles/Login.css'
 
 function Login() {
@@ -15,9 +16,11 @@ function Login() {
   const [signInPass, setSignInPass] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState('')
   const [isRegistered, setIsRegistered] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   onAuthStateChanged(auth, (state) => {
     setIsLoggedIn(state)
+    setIsLoading(false)
   })
 
   function registered() {
@@ -52,62 +55,74 @@ function Login() {
   }
 
   return (
-    <div className={!isLoggedIn ? 'log-in' : 'log-out'}>
-      {isLoggedIn && <button onClick={sighOutFunction}>Log out</button>}
-      {!isRegistered && (
-        <div className='forms'>
-          <h1>Create a new account</h1>
-          <form onSubmit={signUpFunction}>
-            <input
-              type='email'
-              value={signUpEmail}
-              placeholder='email...'
-              onChange={(e) => {
-                setSignUpEmail(e.target.value)
-              }}
-            />
+    <>
+      {isLoading ? (
+        <div className='loading'>
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className={!isLoggedIn ? 'log-in' : 'log-out'}>
+          {isLoggedIn && (
+            <Button variant='text' onClick={sighOutFunction}>
+              Log out
+            </Button>
+          )}
+          {!isRegistered && (
+            <div className='forms'>
+              <h1>Create a new account</h1>
+              <form onSubmit={signUpFunction}>
+                <input
+                  type='email'
+                  value={signUpEmail}
+                  placeholder='email...'
+                  onChange={(e) => {
+                    setSignUpEmail(e.target.value)
+                  }}
+                />
 
-            <input
-              type='password'
-              value={signUpPass}
-              placeholder='password...'
-              onChange={(e) => {
-                setSignUpPass(e.target.value)
-              }}
-            />
-            <button type='submit'>Sigh up</button>
-            <button onClick={registered}>Have an account?</button>
-          </form>
+                <input
+                  type='password'
+                  value={signUpPass}
+                  placeholder='password...'
+                  onChange={(e) => {
+                    setSignUpPass(e.target.value)
+                  }}
+                />
+                <button type='submit'>Sigh up</button>
+                <button onClick={registered}>Have an account?</button>
+              </form>
+            </div>
+          )}
+          {isRegistered && (
+            <div className='forms'>
+              <h1>Log in</h1>
+              <form onSubmit={signInFunction}>
+                <input
+                  id='email'
+                  type='email'
+                  value={signInEmail}
+                  placeholder='email...'
+                  onChange={(e) => {
+                    setSignInEmail(e.target.value)
+                  }}
+                />
+
+                <input
+                  type='password'
+                  value={signInPass}
+                  placeholder='password...'
+                  onChange={(e) => {
+                    setSignInPass(e.target.value)
+                  }}
+                />
+                <button type='submit'>Log in</button>
+                <button onClick={registered}>Create an account</button>
+              </form>
+            </div>
+          )}
         </div>
       )}
-      {isRegistered && (
-        <div className='forms'>
-          <h1>Log in</h1>
-          <form onSubmit={signInFunction}>
-            <input
-              id='email'
-              type='email'
-              value={signInEmail}
-              placeholder='email...'
-              onChange={(e) => {
-                setSignInEmail(e.target.value)
-              }}
-            />
-
-            <input
-              type='password'
-              value={signInPass}
-              placeholder='password...'
-              onChange={(e) => {
-                setSignInPass(e.target.value)
-              }}
-            />
-            <button type='submit'>Log in</button>
-            <button onClick={registered}>Create an account</button>
-          </form>
-        </div>
-      )}
-    </div>
+    </>
   )
 }
 

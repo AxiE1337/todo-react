@@ -26,8 +26,10 @@ function Todos() {
   })
 
   useEffect(() => {
-    getData()
-  }, [todoData])
+    getDocs(collectionRef).then((res) => {
+      setTodoData(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    })
+  }, [collectionRef])
 
   async function getData() {
     try {
